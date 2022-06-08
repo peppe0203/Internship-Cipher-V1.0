@@ -1,0 +1,43 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<style>
+    body {
+        background-image: url('/Images/Cipher-footer.jpg');
+        
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+<div>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+    </svg>
+
+    <h1 class="text-light display-4 text-center">Privacy beleid</h1>
+    <div class="d-flex" style="margin-top:2%">
+        <p class="text-start bg-secondary rounded-3 shadow text-light bg-opacity-50" style="max-width:47.5%; margin-right:5%; padding:1%">
+            Dit is een test applicatie die gebruikt wordt binnen de stage van Azure reporting.<br>
+            Binnen deze applicatie wordt gemonitord welke handelingen plaatsvinden en op welke pagina dit plaatsvindt. <br>
+            Er worden echter geen persoonsgegevens verzameld tijdens het gebruik van deze applicatie. <br>
+            De gegevens die u invult binnen de demo worden ook niet verzameld/opgeslagen.
+        </p>
+        
+        <div class="d-flex align-items-center bg-secondary rounded-3 shadow text-light bg-opacity-50" role="alert" style="padding-left: 1%; padding-right:1%">
+            <svg class="bi flex-shrink-0 me-2"width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+            <div>
+                Voor vragen kunt u terecht bij <a style="color: inherit;" href="mailto: giuseppe.collura@innervate.nl">Giuseppe Collura</a>, development stagiair bij Cipher. 
+            </div>
+        </div>
+    </div>
+    
+
+</div>

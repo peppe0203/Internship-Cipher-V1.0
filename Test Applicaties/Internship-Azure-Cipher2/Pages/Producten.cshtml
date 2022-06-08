@@ -1,0 +1,91 @@
+@page
+@model ProductModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<style>
+    td{
+        text-align: start;
+    }
+</style>
+
+<div class="text-start">
+    <div class="rounded-2 pb-3 shadow-sm" style="background-color: #e4e4e4; padding-left:2%;">
+        <h1 class="display-4">Producten</h1>
+
+        <p style="max-width: 65%">
+            Binnen deze stage zijn er verschillende producten geproduceerd om tot een uiteindelijke oplossing te komen. 
+            Dit is een oplossing voor het daadwerkelijke probleem/de behoefte. 
+            De verschillende producten vormen samen het gehele portfolio van de stage. 
+            Om deze producten te bereiken is er gedurende de gehele stage gewerkt met de Design Science Research (DSR) methodiek,  aangevuld met de Agile werkwijze.
+            De producten zijn terug te vinden in de onderstaande tabel met een korte omschrijving.
+        </p>
+    </div>
+    <div style="margin-top: 2%;">
+        <table class="table table-bordered shadow-sm">
+            <thead style="background-color: #0ede66;">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" style="text-align: start;">Product</th>
+                    <th scope="col" style="text-align: start;">Omschrijving</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Plan van aanpak</td>
+                    <td>Gebruikt als voorbereiding op het project,  zodat voor iedereen duidelijk is wat de bedoeling is met betrekking tot het project. <br>
+                        Hierdoor wordt de kans op misscommunicaties in het beginstadium geminimaliseerd.</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Software Requirements Specification</td>
+                    <td>Alle eisen en wensen van de stakeholders worden in dit document beschreven. <br>
+                        De verschillende eisen zijn geprioriteerd middels de MoSCoW methodiek en aangevuld met een sequentiële prioritering. </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Onderzoeksrapport</td>
+                    <td>In dit document wordt er kennis vergaard over monitoring binnen de Cloud oplossing van Microsoft Azure. <br>
+                        Om deze kennis te vergaren is er gebruik gemaakt van een deskresearch, zoekplan en hoofd- en deelvragen.</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>Adviesrapport</td>
+                    <td>Gebruikt om concrete bevindingen uit het onderzoek samen te vatten en deze informatie te dissemineren.</td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>Ontwerprapport</td>
+                    <td>Het advies wordt in dit document uitgewerkt tot een ontwerp. <br>
+                        Binnen het ontwerp komen de verschillende design- en ontwerpkeuzes terug.</td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>Proof of Concept</td>
+                    <td>Een daadwerkelijke implementatie van het ontwerp. <br>
+                        Dit wordt gebruikt om aan te tonen dat de oplossing ook daadwerkelijk het probleem/de behoefte vervult. <br>
+                        In de toekomst kan de Proof of Concept verder uitgewerkt worden tot een daadwerkelijk product.</td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>Testrapport</td>
+                    <td>Om te controleren welke eisen nu daadwerkelijk verwerkt zijn in de Proof of Concept hebben er testen plaatsgevonden. <br>
+                        De testen die zijn uitgevoerd, zijn gray box testen. <br>
+                        Hiernaast wordt er binnen dit document ook beschrevenen welke gebreken er optreden tijdens het gebruik van de Proof of Concept.</td>
+                </tr>
+                <tr>
+                    <th scope="row">8</th>
+                    <td>Extended Abstract</td>
+                    <td>Dit document is een samenvatting van het gehele project. <br>
+                        Hierin wordt duidelijk wat de stage inhoud, welke methodieken gebruikt zijn en welke producten hierbij zijn geproduceerd. <br>
+                        Dit zodat de informatie van de stage op een beknopte manier gedissemineerd kan worden.
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+    </div>
+
+</div>
+

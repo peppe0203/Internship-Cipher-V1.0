@@ -1,0 +1,149 @@
+@page
+@model DemoModel
+@{
+    ViewData["Title"] = "Demo";
+}
+<style type="text/css">
+    input:focus{
+        outline: 1px solid #9ad7a1;
+        border-radius: 5px;
+    }
+</style>
+
+<div>
+    <h1 class="display-4 text-center">Demo</h1>
+    <p style="max-width:60%"> 
+        Dit is de demo pagina waarin verschillende activiteiten uitgevoerd kunnen worden. 
+        Deze pagina wordt hoofdzakelijk gebruikt om binnen Azure monitoring te demonstreren. 
+        Het is mogelijk dat er verschillende fouten optreden en de pagina niet naar behoren werkt, dit is de bedoeling.
+        Deze fouten kunnen dan in Azure in kaart worden gebracht binnen de verschillende diensten. <br>
+        Het is ook mogelijk om naar de andere demo applicatie te navigeren via de navigatiebalk (<a 
+                style="color: inherit;"
+                href="https://monitoring-webapp-azure-internship-cipher-1.azurewebsites.net">externe demo
+            </a>).
+
+    </p>
+    <div class="d-flex justify-content-start">
+        <form asp-page-handler="ButtonClick" method="post">
+                <button class="btn btn-primary" style="color:black;">Laad datum</button>
+        </form>
+        <h5 class="rounded-3 text-center" style="margin-left:1%; background-color:#e4e4e4; width: 20.5%; padding-bottom:0.5%; padding-top:0.5%">@Model.Message</h5>
+    </div>
+    <hr>
+
+    <div class="d-flex justify-content-start">
+        <div style="width: 30%;">
+            <div class="d-flex justify-content-start">
+                <input type="number" id="requestId" name="requestId" placeholder="0" style="width: 30%;">
+                <button type="button" class="btn btn-primary" onclick="pizzaRequest()" style="height: 1%; margin-left:15%; width:55%; color:black;">Collect pizza (request)</button>
+            </div>
+            <h5 id="pizzaNaam" class="rounded text-center" style="background-color: #e4e4e4; margin-top:2%; padding-top:0.5%; padding-bottom:0.5%">Pizza naam</h5>
+            <img id="pizzaImg" class="border" style="width:100%; height: 250px; border-radius: 5px" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"/>
+        </div>
+        <h3 class="display-6 text-start" style="padding-left: 30%; padding-top:10%">API testen</h3>
+    </div>
+    
+    <hr>
+    <div class="text-center">
+        <h3 class="text-center display-6">Registreer</h3>
+        <p>Test hier de mogelijkheid om een account aan te maken, vergeet niet om aan te geven dat u geen robot bent!</p>
+        <input id="username"  placeholder="Gebruikersnaam" type="text">
+        <input id="firstName"  placeholder="Voornaam" type="text">
+        <input id="lastName"  placeholder="Achternaam" type="text">
+        <input id="email"  placeholder="Email" type="text">
+        <button class="btn btn-primary" type="button" onclick="postRequest()" style="color:black; margin-bottom: 0.25%;">Verzenden</button>
+        <div class="form-check form-switch d-flex justify-content-center">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="false" onclick="switchValidation()">
+            <label style="margin-left:1%" class="form-check-label" for="flexSwitchCheckDefault">Ik ben geen robot</label>
+        </div>
+        <div class="d-flex justify-content-start" style="margin-top: 2.5%; margin-left:12.5%;">
+            <p>Gebruikersnaam:</p>
+            <p style="margin-left:18.5%;">Wachtwoord:</p>
+            <p style="margin-left: 20.5%">Hash:</p>
+        </div>
+        <div>
+            <input  style="width:25%" type="text" id="newUsername" placeholder="Gegenereerde gebruikersnaam" readonly></input>
+            <input style="width:25%" type="text"  id="newPassword" placeholder="Gegenereerd wachtwoord" readonly></input>
+            <input style="width:25%" type="text" id="newHash" placeholder="Bijbehordende hash waarde" readonly></input>
+        </div>
+    </div>
+    
+
+</div>
+
+<script>
+    document.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    }, false);
+</script>
+
+<script>
+    function pizzaRequest(){
+        var input = document.getElementById("requestId").value;
+        if (input > 0){
+            $.ajax({
+                url: "https://api.spoonacular.com/recipes/complexSearch?query=PIZZA&number=" + input + "&apiKey=e62e91417fb145ec993e6149c87fd19c",
+                method: "GET",
+                success: function(response) {
+                    console.log(response);
+                    try{
+                        alert("The API data received: \n" + "\nID: " + response.results[input-1].id + "\nTitle: " + response.results[input-1].title);
+                        document.getElementById("pizzaNaam").innerHTML = response.results[input-1].title;
+                        $("#pizzaImg").attr("src", response.results[input-1].image);;
+                    }
+                    catch(error){
+                        console.log(error);
+                        alert("[!] ERROR: \n" + error)
+                    }
+                    
+                },
+                error: function(error){
+                    console.log("[!] Error occurred: " + error.status);
+                    alert("[!] ERROR: \n" + "\nCode: " + error.status);
+                }
+            });
+        }
+    };
+    function postRequest() {
+            let postUserName = document.getElementById("username").value
+            let postFirstName = document.getElementById("firstName").value
+            let postLastName = document.getElementById("lastName").value
+            let postEmail = document.getElementById("email").value
+            if (document.getElementById("flexSwitchCheckDefault").value == "true"){
+                apiKey = "e62e91417fb145ec993e6149c87fd19c"
+            }
+            else{
+                apiKey = ""
+            };
+            $.ajax({
+                url: "https://api.spoonacular.com/users/connect?apiKey=" + apiKey,
+                method: "POST",
+                data: JSON.stringify({
+                    "username": postUserName,
+                    "firstName": postFirstName,
+                    "lastName": postLastName,
+                    "email": postEmail
+                }),
+                success: function(response) {
+                    console.log(response);
+                    alert("POST request status: " + response.status);
+                    document.getElementById("newUsername").value = response.username;
+                    document.getElementById("newPassword").value = response.spoonacularPassword;
+                    document.getElementById("newHash").value = response.hash;
+                },
+                error: function(error){
+                    console.log("[!] Error occurred: " + error.status);
+                    alert("[!] ERROR: \nNot possible to perform a POST request" + "\nCode: " + error.status);
+                }
+            })
+        };
+    function switchValidation(){
+        let valueValidation = document.getElementById("flexSwitchCheckDefault").value;
+        if (valueValidation == "false"){
+            document.getElementById("flexSwitchCheckDefault").value = "true";
+        }
+        else{
+            document.getElementById("flexSwitchCheckDefault").value = "false";
+        }
+    }
+</script>

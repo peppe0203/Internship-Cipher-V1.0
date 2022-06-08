@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Internship-Azure-Cipher2/1.0.0": {
+        "runtime": {
+          "Internship-Azure-Cipher2.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Internship-Azure-Cipher2/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

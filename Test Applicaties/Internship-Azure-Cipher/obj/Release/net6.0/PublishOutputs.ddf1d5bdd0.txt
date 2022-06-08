@@ -1,0 +1,7 @@
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\Internship-Azure-Cipher.exe
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\appsettings.Development.json
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\appsettings.json
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\Internship-Azure-Cipher.dll
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\Internship-Azure-Cipher.deps.json
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\Internship-Azure-Cipher.runtimeconfig.json
+C:\Github\Internship-Azure-Cipher\bin\Release\net6.0\publish\Internship-Azure-Cipher.pdb

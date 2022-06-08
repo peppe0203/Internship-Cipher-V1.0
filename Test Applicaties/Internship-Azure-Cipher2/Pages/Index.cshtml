@@ -1,0 +1,40 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<style>
+    body {
+        background-image: url('/Images/Cipher-background.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+<div>
+    <h1 class="display-4 text-center text-light">Stage Azure Reporting</h1>
+    <!-- Info item -->
+    <div class="bg-secondary rounded-3 shadow text-light bg-opacity-50" style="width: 55%; margin-top: 2%; margin-left: 2%">
+        <p style="padding: 3%;">
+            Welkom bij de tweede demo applicatie van deze stage. 
+            Het betreft hier de stage omtrent Azure reporting. 
+            Deze demo applicatie geeft een weergave over wat de stage inhoud en welke producten hierbij zijn opgeleverd. 
+            De informatie binnen deze applicatie dient als een extra toevoeging. 
+            Deze informatie zou met behulp van het Extended Abstract al duidelijk moeten zijn. 
+            <br><br>
+            Deze applicatie wordt gebruikt binnen de Proof of Concept om monitoring binnen Azure te demonstreren. 
+            De verschillende handelingen binnen deze applicatie worden dan ook gemonitord (bijgehouden).
+            Onder de kop demo’s zijn verschillende test activiteiten uitgewerkt, zodat ook deze handelingen in kaart gebracht kunnen worden binnen Azure.
+
+        </p>
+    </div>
+    <div class="bg-secondary rounded-3 shadow bg-opacity-50 text-light" style="width: 40%; margin-top: 3.5%; margin-left: 60%;">
+        <img class="mx-auto d-block rounded" style="padding-top: 6%; padding-bottom: 5%;" src="/Images/Cipher-Logo.jpg" alt="Cipher logo" width="275">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-circle mx-auto d-block" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+        <img class="mx-auto d-block" style="margin-top: -7%;" src="/Images/Microsoft-Azure-Logo.png"  alt="Azure logo" width="300">
+    </div>
+    
+</div>

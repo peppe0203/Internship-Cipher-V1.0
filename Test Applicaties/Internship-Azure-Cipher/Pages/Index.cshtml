@@ -1,0 +1,111 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@* camelCase is used for parameter names *@
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>
+        Test the different functions via the buttons.
+        </br>
+        One button does't work properly but that is the intention, this will be used to demonstrate monitoring in Azure.
+    </p>
+    @* Eddit in text that error we use is 404, maby later we kan use an other request *@
+    <button type="button" class="btn btn-primary text-dark" onclick="testRequestNew(1)">Correct API request (JSON)</button>
+    <button type="button" class="btn btn-primary text-dark" onclick="testRequestNew(10293029)">False API request (JSON)</button>
+    </br>
+    <hr style="width: 60%; margin-top: 30px; margin-left: 20%">
+    <button type="button" class="btn btn-primary text-dark" onclick="getTextFromAPI()" style="width: 13%; margin-left: 0.5%">GET new text</button>
+    <div style="height: 175px; margin-top: 2%; background-color: #EFEFEF; border-radius: 10px; box-shadow: 7px 6px 6px 0px rgba(184,184,184,0.71);">
+        <p id="loadText" style="margin-left: 2.5%; margin-right:2.5%;">The loaded information will be displayed here <br> Press the 'GET new text' button</p>
+    </div>
+    <hr style="width: 60%; margin-top: 30px; margin-left: 20%">
+    <div class="form-group row d-flex justify-content-center mt-4">
+        <input class="form-control" type="text" id="postUrl" name="postUrl" placeholder="[POST] url: www.test.com" pattern="www.*" style="width: 25%">
+        <button type="button" class="btn btn-primary ml-2 text-dark" onclick="postRequest()" style="width: 20%; margin-left: 0.5%">Test POST request</button>    
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+        <img id="collectedImg" style="width: 25%; height: 150px; border-radius: 5px"/>
+        <button type="button" class="btn btn-primary text-dark" onclick="getImg()" style="width: 20%; height: 1%; margin-top:5%; margin-left: 1%">Collect image</button>
+    </div>
+</div>
+
+<script>
+    @* 
+    Different API requests.
+    AJAX (Asychronous Javascript And XML) is used for the handling of requests.
+    AJAX is used because it is possible to monitor these specific actions with Azure (fetch requests are harder to monitor with Azure).
+
+    The different types of requests possible (GET, HEAD, POST, PUT, DELETE, PATCH, TRACE, CONNECT):
+    - GET: Used to retrieve and request data from a specific resource (popular HTTP request techniques);
+    - HEAD: Similar as the GET methode, but doesn't have a message-body in the response;
+    - POST: Used to send data to a server to crete or update a resource;
+    - PUT: Same as the POST methode, difference is that if you send the same request multiple times, the results will always be the same;
+    - DELETE: Used to delete resources indicated by th specific URL;
+    - PATCH: Mainly used to edit and update resources;
+    - TRACE: Used to test the path of the responce, if the request is received on the other end;
+    - CONNECT: Used by the client to create a network connectio to a web server over a partical HTTP (example is SSL tunneling).
+    *@
+    function testRequestNew(number){
+        $.ajax({
+            url: "https://jsonplaceholder.typicode.com/todos/" + number,
+            type: "GET",
+            success: function(response) {
+                console.log(response);
+                alert("The API data received: \n" + "\nID: " + response.id + "\nTitle: " + response.title + "\nCompleted: " + response.completed);
+            },
+            error: function(error){
+                console.log("[!] Error occurred: " + error.status);
+                alert("[!] ERROR: \n" + "\nCode: " + error.status);
+            }
+        });
+    };
+    function getTextFromAPI(){
+        $.ajax({
+            method: "GET",
+            url: "https://baconipsum.com/api/?type=all-meat",
+            dataType: "json"
+        })
+            .done(function(data) {
+            console.log(data);
+            $("#loadText").text(data[0]);
+            })
+            .fail(function(error){
+                console.log("[!] Error occurred: " + error.status);
+                alert("[!] ERROR: \n" + "\nCode: " + error.status);
+            })
+    };
+    // Special request used to test POST API's
+    function postRequest() {
+        let postUrlValue = document.getElementById("postUrl").value
+        $.ajax({
+            url: postUrlValue,
+            type: "POST",
+            data: " ",
+            success: function(response) {
+                console.log(response);
+                alert("POST request succesful");
+            },
+            error: function(error){
+                console.log("[!] Error occurred: " + error.status);
+                alert("[!] ERROR: \nNot possible to perform a POST request" + "\nCode: " + error.status);
+            }
+        })
+    };
+    function getImg(){
+        $.ajax({
+            url: "https://dog.ceo/api/breeds/image/random",
+            type: "GET",
+            success: function(response) {
+                console.log(response);
+                $("#collectedImg").attr("src", response.message);
+            },
+            error: function(error){
+                console.log("[!] Error occurred: " + error.status);
+                alert("[!] ERROR: \n" + "\nCode: " + error.status);
+            }
+        });
+    }
+</script>
