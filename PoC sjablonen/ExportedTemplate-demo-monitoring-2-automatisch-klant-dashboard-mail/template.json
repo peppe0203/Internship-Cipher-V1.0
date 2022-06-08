@@ -1,0 +1,306 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_klant_dashboard_mail_2_name": {
+            "defaultValue": "klant-dashboard-mail-2",
+            "type": "String"
+        },
+        "connections_applicationinsights_1_externalid": {
+            "defaultValue": "/subscriptions/00e20b88-1545-421b-84de-df0b02feaae6/resourceGroups/demo-monitoring-2/providers/Microsoft.Web/connections/applicationinsights-1",
+            "type": "String"
+        },
+        "connections_sendgrid_externalid": {
+            "defaultValue": "/subscriptions/00e20b88-1545-421b-84de-df0b02feaae6/resourceGroups/demo-monitoring-1/providers/Microsoft.Web/connections/sendgrid",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_klant_dashboard_mail_2_name')]",
+            "location": "westeurope",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "staticResults": {
+                        "E-mail_verzenden_(v4)0": {
+                            "status": "Succeeded",
+                            "outputs": {
+                                "headers": {},
+                                "statusCode": "OK"
+                            }
+                        }
+                    },
+                    "triggers": {
+                        "Trigger_(periodiek)": {
+                            "recurrence": {
+                                "frequency": "Week",
+                                "interval": 1
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Week",
+                                "interval": 1
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "E-mail_verzenden_(v4)": {
+                            "runAfter": {
+                                "HTML_bericht": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "from": "1826689collura@zuyd.nl",
+                                    "ishtml": true,
+                                    "subject": "Periodieke update (@{formatDateTime(utcNow(), 'dddd d MMMM', 'nl-nl')}) van uw applicatie",
+                                    "text": "<p>@{variables('html body')}</p>",
+                                    "to": "Giuseppe.Collura@innervate.nl"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['sendgrid']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/v4/mail/send"
+                            },
+                            "runtimeConfiguration": {
+                                "staticResult": {
+                                    "staticResultOptions": "Disabled",
+                                    "name": "E-mail_verzenden_(v4)0"
+                                }
+                            }
+                        },
+                        "HTML_bericht": {
+                            "runAfter": {
+                                "Query_afbeelding_-_fouten": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "html body",
+                                        "type": "string",
+                                        "value": "<h2> Beste eigenaar van applicatie @{variables('Resource group naam')},</h2>\n<i> Wanneer u deze mail niet correct kunt lezen, moet u de mail in de browser openen en als betrouwbaar markeren.</i>\n\n<p> In dit bericht ontvangt u de periodieke weergave van uw applicatie. Dit is op basis van de gegevens die door ons zijn gemeten. Bij vragen kunt u te allen tijde mailen. Het is ook mogelijk om het dashboard met live gegevens te raadplegen via: <a href=\"https://portal.azure.com\">Azure portaal</a></p>\n<hr>\n<br>\n\n<h3>Gebruikers </h3>\n<p>In de onderstaande afbeelding wordt het aantal gebruikers weergegeven. Dit zijn verschillende gebruikers die gebruik hebben gemaakt van uw applicatie. De weergave is op basis van de afgelopen zeven dagen. </p>\n<img width=\"110%\" src=\"data:image/png;base64,@{variables('Query afbeelding - gebruikers 7 dagen')}\"/>\n\n<h3>Herkomst gebruikers</h3>\n<p>De verschillende gebruikers worden in het onderstaande figuur ingedeeld op basis van hun locatie. Dit geeft inzicht in wie nu de daadwerkelijke doelgroep van de toepassing is. Hier zou mogelijk in de toekomst nog op ingespeeld kunnen worden. Dit zodat aan de mogelijke wensen van de gebruikers voldaan kan worden.</p>\n<img width=\"110%\" src=\"data:image/png;base64,@{variables('Query afbeelding - herkomst gebruikers')}\"/>\n\n<h3>Afhandeltijd</h3>\n<p>Op basis van de afgelopen zeven dagen is er ook gekeken naar de afhandeltijd. Wanneer een gebruiker een handeling uitvoert, wordt er gekeken hoe lang het duurt voordat deze handeling is afgehandeld. In het onderstaande figuur wordt het gemiddelde van alle activiteiten weergegeven in milliseconden. Afhankelijk van uw type applicatie, wordt de invloed van de afhandeltijd bepaalt (query is op basis van alle reactietijden van de server en browser).</p>\n<img width=\"110%\" src=\"data:image/png;base64,@{variables('Query afbeelding - afhandeltijd')}\"/>\n\n<h3>Fouten</h3>\n<p>In de onderstaande afbeelding wordt het aantal fouten per activiteit type weergegeven. De fouten worden weergegeven op basis van de afgelopen zeven dagen. Het hoeft echter niet zo te zijn dat de gebruiker nadelige gevolgen ondervindt door deze fouten. Het kan bijvoorbeeld zo zijn dat een gebruiker een aanvraag doet naar een product wat niet bestaat. Het kan bijvoorbeeld ook zo zijn dat websites of applicaties waar uw toepassing afhankelijk van is, inactief of niet te bereiken zijn.</p>\n<li>Dependency: dit zijn afhankelijkheden die gebruikt worden in uw toepassing (vergaren van data van onderranden applicaties, resources of websites);</li>\n<li>PageView: Dit zijn de statische weergaves/pagina’s op uw website;</li>\n<li>Request: Dit zijn aanvragen naar de achterkant (backend) van de toepassing, hier vindt bijvoorbeeld het rekenwerk van uw toepassing plaats.</li>\n<img width=\"110%\" src=\"data:image/png;base64,@{variables('Query afbeelding - fouten')}\"/>\n<br><br><br><hr><br>\n\n<i>Met vriendelijke groet,<br><br>\nHet team van Cipher<br>\nAzielaan 14, 6199 AG Maastricht</i>\n"
+                                    }
+                                ]
+                            }
+                        },
+                        "Query_afbeelding-_afhandeltijd": {
+                            "runAfter": {
+                                "Query_visualisatie_-_afhandeltijd": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Query afbeelding - afhandeltijd",
+                                        "type": "string",
+                                        "value": "@string(body('Query_visualisatie_-_afhandeltijd')?['attachmentContent'])"
+                                    }
+                                ]
+                            }
+                        },
+                        "Query_afbeelding_-_fouten": {
+                            "runAfter": {
+                                "Query_visualisatie_-_fouten": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Query afbeelding - fouten",
+                                        "type": "string",
+                                        "value": "@string(body('Query_visualisatie_-_fouten')?['attachmentContent'])"
+                                    }
+                                ]
+                            }
+                        },
+                        "Query_afbeelding_-_gebruikers": {
+                            "runAfter": {
+                                "Query_visualisatie_-_gebruikers_7_dagen": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Query afbeelding - gebruikers 7 dagen",
+                                        "type": "string",
+                                        "value": "@string(body('Query_visualisatie_-_gebruikers_7_dagen')?['attachmentContent'])"
+                                    }
+                                ]
+                            },
+                            "description": "Code aangepast dat de inhoud niet automatisch decoded wordt maar een string blijft"
+                        },
+                        "Query_afbeelding_-_herkomst_gebruikers": {
+                            "runAfter": {
+                                "Query_visualisatie_-_herkomt_gebruikers": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Query afbeelding - herkomst gebruikers",
+                                        "type": "string",
+                                        "value": "@string(body('Query_visualisatie_-_herkomt_gebruikers')?['attachmentContent'])"
+                                    }
+                                ]
+                            }
+                        },
+                        "Query_visualisatie_-_afhandeltijd": {
+                            "runAfter": {
+                                "Query_afbeelding_-_herkomst_gebruikers": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "let timeGrain=3h;\nlet dataset=dependencies\n    // additional filters can be applied here\n    | where client_Type == \"Browser\"\n    | project duration, timestamp;\nlet dataset2 = pageViews\n    | where client_Type == \"Browser\"\n    | project duration, timestamp;\n// calculate average dependency duration for all dependencies\nlet dataset3=requests\n    | where client_Type != \"Browser\"\n    | project duration, timestamp;\nlet dataset4=requests\n    | where client_Type != \"Browser\"\n    | project duration, timestamp;\ndataset\n| union dataset2, dataset3, dataset4\n| summarize avg(duration) by bin(timestamp, timeGrain)\n// render result in a chart\n| render barchart  ",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['applicationinsights_1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/api/VisualizeQueryDraft",
+                                "queries": {
+                                    "chartType": "Time Chart",
+                                    "timerange": "Last 7 days",
+                                    "version": "2"
+                                }
+                            },
+                            "description": "Gemiddelde reactietijd weergegeven in ms, weergegeven over de afgelopen 7 dagen"
+                        },
+                        "Query_visualisatie_-_fouten": {
+                            "runAfter": {
+                                "Query_afbeelding-_afhandeltijd": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "// Request count trend \n// Chart Request count over the last day. \n// To create an alert for this query, click '+ New alert rule'\nunion pageViews, requests, dependencies\n    | summarize FailedRequest = countif(success == false) by bin(timestamp, 30m), itemType\n    | render timechart",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['applicationinsights_1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/api/VisualizeQueryDraft",
+                                "queries": {
+                                    "chartType": "Time Chart",
+                                    "timerange": "Last 7 days",
+                                    "version": "2"
+                                }
+                            },
+                            "description": "Weergave van de top x aantal fouten binnen de toepassing (dependencies zijn hierin meegenomen)"
+                        },
+                        "Query_visualisatie_-_gebruikers_7_dagen": {
+                            "runAfter": {
+                                "Resourcegroep_naam": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "let usg_events = dynamic([\"*\"]);\nlet grain = iff(true, 1d, 1h);\nlet mainTable = union pageViews, customEvents, requests\n    | where timestamp > ago(7d)\n    | where isempty(operation_SyntheticSource)\n    | extend name =replace(\"\\n\", \"\", name)\n    | extend name =replace(\"\\r\", \"\", name)\n    | where '*' in (usg_events) or name in (usg_events);\nlet resultTable = mainTable;\nresultTable\n| make-series Users = dcountif(user_Id, 'user_Id' != 'user_AuthenticatedId' or ('user_Id' == 'user_AuthenticatedId' and isnotempty(user_Id))) default = 0 on timestamp from ago(7d) to now() step grain\n| render timechart with (title=\"Gebruikers afgelopen 7 dagen\", legend=hidden, xtitle=\"Tijd\", ytitle=\"Gebruikers\")",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['applicationinsights_1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/api/VisualizeQueryDraft",
+                                "queries": {
+                                    "chartType": "Time Chart",
+                                    "timerange": "Last 7 days",
+                                    "version": "2"
+                                }
+                            },
+                            "description": "Afgelopen aantal gebruikers weergegeven op basis van een tijdsinterval"
+                        },
+                        "Query_visualisatie_-_herkomt_gebruikers": {
+                            "runAfter": {
+                                "Query_afbeelding_-_gebruikers": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "requests\n| summarize CountByCountry=count() by client_CountryOrRegion\n| top 10 by CountByCountry\n| render piechart",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['applicationinsights_1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/api/VisualizeQueryDraft",
+                                "queries": {
+                                    "chartType": "Pie Chart",
+                                    "timerange": "Last 7 days",
+                                    "version": "2"
+                                }
+                            }
+                        },
+                        "Resourcegroep_naam": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Resource group naam",
+                                        "type": "string",
+                                        "value": "@substring(workflow()['id'],add(indexOf(workflow()['id'],'resourceGroups/'),15),sub(sub(indexOf(workflow()['id'],'/providers'),indexOf(workflow()['id'],'resourceGroups/')),15))"
+                                    }
+                                ]
+                            },
+                            "description": "Resource group naam ophalen"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "applicationinsights_1": {
+                                "connectionId": "[parameters('connections_applicationinsights_1_externalid')]",
+                                "connectionName": "applicationinsights-1",
+                                "id": "/subscriptions/00e20b88-1545-421b-84de-df0b02feaae6/providers/Microsoft.Web/locations/westeurope/managedApis/applicationinsights"
+                            },
+                            "sendgrid": {
+                                "connectionId": "[parameters('connections_sendgrid_externalid')]",
+                                "connectionName": "sendgrid",
+                                "id": "/subscriptions/00e20b88-1545-421b-84de-df0b02feaae6/providers/Microsoft.Web/locations/westeurope/managedApis/sendgrid"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,1068 @@
+{
+  "properties": {
+    "lenses": {
+      "0": {
+        "order": 0,
+        "parts": {
+          "0": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 12,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "content": "Dit is een dashboard van uw applicatie. De weergave is op basis van live gegevens. Voor vragen kunt u terecht bij het team van Cipher. Het is mogelijk dat de gegevens die u per mail hebt ontvangen iets verschillen met de gegevens die hier worden weergegeven. De gegevens die u per mail ontvangt zijn namelijk op een ander moment opgehaald.\n",
+                    "title": "Uw live applicatie",
+                    "subtitle": "",
+                    "markdownSource": 1,
+                    "markdownUri": null
+                  }
+                }
+              }
+            }
+          },
+          "1": {
+            "position": {
+              "x": 12,
+              "y": 0,
+              "colSpan": 2,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/ClockPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "timezoneId": "W. Europe Standard Time",
+                    "timeFormat": "HH:mm",
+                    "version": 1
+                  }
+                }
+              }
+            }
+          },
+          "2": {
+            "position": {
+              "x": 0,
+              "y": 2,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": {
+                    "SubscriptionId": "_ADD_HERE_SUBSCRIPTION_ID_",
+                    "ResourceGroup": "_ADD_HERE_RESOURCEGROUP_NAME_",
+                    "Name": "_ADD_HERE_APPLICATION_INSIGHTS_NAME_",
+                    "LinkedApplicationType": 0,
+                    "ResourceId": "_ADD_HERE_APPLICATION_INSIGHTS_ID_",
+                    "ResourceType": "microsoft.insights/components",
+                    "IsAzureFirst": false
+                  }
+                },
+                {
+                  "name": "TimeContext",
+                  "value": {
+                    "durationMs": 604800000,
+                    "createdTime": "Start Time",
+                    "isInitialTime": false,
+                    "grain": 1,
+                    "useDashboardTimeRange": false
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "1.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "RestoreData",
+                  "value": "{\"version\":\"Segmentation/2.0\",\"metric\":\"Users\",\"cohortId\":\"\",\"isAntiCohort\":false,\"chartType\":0,\"eventsDataObject\":{\"version\":\"EventsDropdown/1.0\",\"typesWithAllSelected\":{\"1\":true,\"3\":true,\"5\":true},\"events\":[],\"cohortsIds\":[]},\"filters\":[],\"by\":null,\"grain\":\"12h\",\"splitBy\":null,\"timeContext\":{\"durationMs\":604800000,\"endTime\":null,\"createdTime\":\"Start Time\",\"isInitialTime\":false,\"grain\":1,\"useDashboardTimeRange\":false},\"histograms\":[\"context.location.country\",\"context.device.osVersion\",\"context.device.browserVersion\"],\"heroVisible\":true,\"gridsVisible\":true,\"insightsVisible\":true,\"isSampleRandom\":true,\"apdexThreshold\":null}",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/UsersSegmentationPinnedPart",
+              "asset": {
+                "idInputName": "ComponentId",
+                "type": "ApplicationInsights"
+              },
+              "partHeader": {
+                "title": "Gebruikers",
+                "subtitle": ""
+              }
+            }
+          },
+          "3": {
+            "position": {
+              "x": 7,
+              "y": 2,
+              "colSpan": 5,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "_ADD_HERE_APPLICATION_INSIGHTS_ID_"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "65303146-95af-4dc4-b110-b565da5a9730",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "P1D",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "// Top 10 countries by traffic \n// Chart the amount of requests from the top 10 countries. \nrequests\n| summarize CountByCountry=count() by client_CountryOrRegion\n| top 10 by CountByCountry\n| render piechart",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Pie",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "_ADD_HERE_APPLICATION_INSIGHTS_NAME_",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "client_CountryOrRegion",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "CountByCountry",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "// Top 10 countries by traffic \n// Chart the amount of requests from the top 10 countries. \nrequests\n| summarize CountByCountry=count() by client_CountryOrRegion\n\n",
+                  "SpecificChart": "Donut",
+                  "PartTitle": "Locatie gebruikers",
+                  "LegendOptions": {
+                    "isEnabled": false,
+                    "position": "Bottom"
+                  },
+                  "IsQueryContainTimeRange": false
+                }
+              }
+            }
+          },
+          "4": {
+            "position": {
+              "x": 0,
+              "y": 7,
+              "colSpan": 14,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "content": "Met behulp van de onderstaande figuren en tabellen wordt de algemene prestatie van de applicatie weergegeven. Eerst wordt de gemiddelde reactietijd weergegeven. Dit is de tijd die nodig is om een activiteit uit te voeren. Dit kunnen activiteiten zijn die door de gebruiker worden uitgevoerd of die automatisch door de applicatie worden uitgevoerd. Daarnaast is de prestatie nog eens uitgedrukt met behulp van de __Apdex score__. Dit is een methodiek die gebruikt kan worden om de prestaties van een applicatie uit te drukken en te vergelijken. De Apdex wordt gemeten op basis van de gebruikers invloed. Als een activiteit niet voltooid wordt of dit te lang duurt, wordt dit gekenmerkt als frustratie voor de gebruiker. In het algemeen wil men zo min mogelijk gefrustreerde gebruikers. De score van de Apdex is op basis van 0 tot 1 (0 is hierin het slechtste).",
+                    "title": "Uitleg prestaties applicatie",
+                    "subtitle": "",
+                    "markdownSource": 1,
+                    "markdownUri": null
+                  }
+                }
+              }
+            }
+          },
+          "5": {
+            "position": {
+              "x": 0,
+              "y": 9,
+              "colSpan": 9,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "_ADD_HERE_APPLICATION_INSIGHTS_ID_"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "7c32b16f-41c1-47d2-9d41-386fea15f55e",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "P7D",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "let timeGrain=3h;\nlet dataset=dependencies\n    // additional filters can be applied here\n    | where client_Type == \"Browser\"\n    | project duration, timestamp;\nlet dataset2 = pageViews\n    | where client_Type == \"Browser\"\n    | project duration, timestamp;\n// calculate average dependency duration for all dependencies\nlet dataset3=requests\n    | where client_Type != \"Browser\"\n    | project duration, timestamp;\nlet dataset4=requests\n    | where client_Type != \"Browser\"\n    | project duration, timestamp;\ndataset\n| union dataset2, dataset3, dataset4\n| summarize avg(duration) by bin(timestamp, timeGrain)\n// render result in a chart\n| render timechart   \n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "_ADD_HERE_APPLICATION_INSIGHTS_NAME_",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "avg_duration",
+                        "type": "real"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "let timeGrain=3h;\nlet dataset=dependencies\n    // additional filters can be applied here\n    | where client_Type == \"Browser\"\n    | project duration, timestamp;\nlet dataset2 = pageViews\n    | where client_Type == \"Browser\"\n    | project duration, timestamp;\n// calculate average dependency duration for all dependencies\nlet dataset3=requests\n    | where client_Type != \"Browser\"\n    | project duration, timestamp;\nlet dataset4=requests\n    | where client_Type != \"Browser\"\n    | project duration, timestamp;\ndataset\n| union dataset2, dataset3, dataset4\n| summarize avg(duration) by bin(timestamp, timeGrain)\n// render result in a chart\n| render timechart   \n\n",
+                  "SpecificChart": "Scatter",
+                  "LegendOptions": {
+                    "isEnabled": false,
+                    "position": "Bottom"
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Gemiddelde reactietijd",
+                "subtitle": ""
+              }
+            }
+          },
+          "6": {
+            "position": {
+              "x": 9,
+              "y": 9,
+              "colSpan": 5,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "_ADD_HERE_APPLICATION_INSIGHTS_ID_",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": [
+                    "_ADD_HERE_APPLICATION_INSIGHTS_ID_"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "community-Workbooks/Performance/Apdex",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "value": "App Performance Index (Apdex)",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"version\":\"KqlItem/1.0\",\"query\":\"let apdexThreshhold = toint('{ApdexThresholdInMilliseconds}');\\r\\nlet apdexData = {Type}\\r\\n| where timestamp {TimeRange}\\r\\n| where name in ({Operations}) or '*' in ({Operations})\\r\\n{OperationsFilter}\\r\\n| extend success = columnifexists('success', true)\\r\\n| extend Failure = iff('{Calculations}' == 'ConsiderFailures' and success == false, 1, 0)\\r\\n| extend InterestingDimension = iff(isempty({SplitBy})== true, 'Unknown', {SplitBy})\\r\\n| where InterestingDimension in ({SegmentFilters}) or '*' in ({SegmentFilters})\\r\\n| summarize AverageDuration = avg(duration), Failures = sum(Failure) by user_Id\\r\\n| extend UserExperience = case(AverageDuration <= apdexThreshhold, 'Satisfied', AverageDuration <= 4 * apdexThreshhold, 'Tolerating', 'Frustrated')\\r\\n| extend UserExperience = case(Failures > 0, \\\"Frustrated\\\", UserExperience)\\r\\n| summarize Satisfied = countif(UserExperience == 'Satisfied'), Tolerating = countif(UserExperience == 'Tolerating'), Frustrated = countif(UserExperience == 'Frustrated'), Total = count()\\r\\n| project Satisfied, Tolerating, Frustrated, ApdexScore = round((Satisfied + (Tolerating / 2.0)) / Total, 2);\\r\\napdexData\\r\\n//| extend [\\\"Apdex Interpretation\\\"] = case([\\\"Apdex Score\\\"] <= 0.5, '⛔ Unacceptable', [\\\"Apdex Score\\\"] <= 0.7, '⚠️ Poor', [\\\"Apdex Score\\\"] <= 0.85, '⚠️ Fair', [\\\"Apdex Score\\\"] <= 0.94, '✔️ Good', '✔️ Excellent')\\r\\n| evaluate narrow()\\r\\n| extend Value = toreal(Value)\\r\\n| project Name = case(Column == 'Satisfied', 'Satisfied Users', Column == 'Tolerating', 'Tolerating Users', Column == 'Frustrated', 'Frustrated Users', 'Apdex Score'), Value, Rank = case(Column == 'Satisfied', 2, Column == 'Tolerating', 3, Column == 'Frustrated', 4, 1), Interperation = iff(Column == 'ApdexScore', case(Value <= 0.5, '⛔ Unacceptable', Value <= 0.7, '⚠️ Poor', Value <= 0.85, '⚠️ Fair', Value <= 0.94, '✔️ Good', '✔️ Excellent'), '')\\r\\n| order by Rank asc\",\"size\":3,\"queryType\":0,\"resourceType\":\"microsoft.insights/components\",\"visualization\":\"tiles\",\"tileSettings\":{\"titleContent\":{\"columnMatch\":\"Name\",\"formatter\":1,\"formatOptions\":{\"showIcon\":true}},\"leftContent\":{\"columnMatch\":\"Value\",\"formatter\":12,\"formatOptions\":{\"showIcon\":true},\"numberFormat\":{\"unit\":0,\"options\":{\"style\":\"decimal\"}}},\"secondaryContent\":{\"columnMatch\":\"Interperation\",\"formatter\":1,\"formatOptions\":{\"showIcon\":true}},\"showBorder\":false}}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {
+                    "Type": {
+                      "type": 2,
+                      "value": "union pageViews, requests, dependencies",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Page Views, Requests and Dependencies",
+                      "displayName": "Type",
+                      "formattedValue": "union pageViews, requests, dependencies"
+                    },
+                    "Operations": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "All Operations",
+                      "displayName": "Operations",
+                      "formattedValue": "'*'"
+                    },
+                    "TimeRange": {
+                      "type": 4,
+                      "value": {
+                        "durationMs": 604800000
+                      },
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Last 7 days",
+                      "displayName": "TimeRange",
+                      "formattedValue": "Last 7 days"
+                    },
+                    "OperationsFilter": {
+                      "type": 1,
+                      "value": "",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "<unset>",
+                      "displayName": "OperationsFilter",
+                      "formattedValue": ""
+                    },
+                    "ApdexThresholdInMilliseconds": {
+                      "type": 1,
+                      "value": 788,
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": 788,
+                      "displayName": "ApdexThresholdInMilliseconds",
+                      "formattedValue": 788
+                    },
+                    "Calculations": {
+                      "type": 2,
+                      "value": "ConsiderFailures",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Consider failures as frustrating",
+                      "displayName": "Calculations",
+                      "formattedValue": "ConsiderFailures"
+                    },
+                    "SplitBy": {
+                      "type": 2,
+                      "value": "name",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "⚪ Activity Name",
+                      "displayName": "SplitBy",
+                      "formattedValue": "name"
+                    },
+                    "OrderBy": {
+                      "type": 2,
+                      "value": "Relevance desc",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Most Relevant",
+                      "displayName": "OrderBy",
+                      "formattedValue": "Relevance desc"
+                    },
+                    "SegmentFilters": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Include All",
+                      "displayName": "SegmentFilters",
+                      "formattedValue": "'*'"
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookQueryPart"
+            }
+          },
+          "7": {
+            "position": {
+              "x": 0,
+              "y": 13,
+              "colSpan": 14,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "ComponentId",
+                  "value": "_ADD_HERE_APPLICATION_INSIGHTS_ID_",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeContext",
+                  "value": null,
+                  "isOptional": true
+                },
+                {
+                  "name": "ResourceIds",
+                  "value": [
+                    "_ADD_HERE_APPLICATION_INSIGHTS_ID_"
+                  ],
+                  "isOptional": true
+                },
+                {
+                  "name": "ConfigurationId",
+                  "value": "community-Workbooks/Performance/Apdex",
+                  "isOptional": true
+                },
+                {
+                  "name": "Type",
+                  "value": "workbook",
+                  "isOptional": true
+                },
+                {
+                  "name": "GalleryResourceType",
+                  "value": "microsoft.insights/components",
+                  "isOptional": true
+                },
+                {
+                  "name": "PinName",
+                  "value": "App Performance Index (Apdex)",
+                  "isOptional": true
+                },
+                {
+                  "name": "StepSettings",
+                  "value": "{\"version\":\"KqlItem/1.0\",\"query\":\"let apdexThreshhold = toint('{ApdexThresholdInMilliseconds}');\\nlet apdexData = {Type}\\n| where timestamp {TimeRange}\\n| where name in ({Operations}) or '*' in ({Operations})\\n{OperationsFilter}\\n| extend success = columnifexists('success', true)\\n| extend Failure = iff('{Calculations}' == 'ConsiderFailures' and success == false, 1, 0)\\n| extend InterestingDimension = iff(isempty({SplitBy})== true, 'Unknown', {SplitBy})\\n| where InterestingDimension in ({SegmentFilters}) or '*' in ({SegmentFilters})\\n| summarize AverageDuration = avg(duration), Failures = sum(Failure) by user_Id, InterestingDimension\\n| extend UserExperience = case(AverageDuration <= apdexThreshhold, 'Satisfied', AverageDuration <= 4 * apdexThreshhold, 'Tolerating', 'Frustrated')\\n| extend UserExperience = case(Failures > 0, \\\"Frustrated\\\", UserExperience)\\n| summarize Satisfied = countif(UserExperience == 'Satisfied'), Tolerating = countif(UserExperience == 'Tolerating'), Frustrated = countif(UserExperience == 'Frustrated'), Total = count() by InterestingDimension\\n| project InterestingDimension, [\\\"Satisfied Users\\\"] = Satisfied, [\\\"Tolerating Users\\\"] = Tolerating, [\\\"Frustrated Users\\\"] = Frustrated, [\\\"Apdex Score\\\"] = round((Satisfied + (Tolerating / 2.0)) / Total, 2), Total\\n| extend Relevance = iff([\\\"Apdex Score\\\"] == 0, pow(Total, 1.6), Total / [\\\"Apdex Score\\\"])\\n| project-rename Users = Total\\n| order by {OrderBy}\\n| project-away Users, Relevance;\\napdexData\\n| extend [\\\"Apdex Interpretation\\\"] = case([\\\"Apdex Score\\\"] <= 0.5, '⛔ Unacceptable', [\\\"Apdex Score\\\"] <= 0.7, '⚠️ Poor', [\\\"Apdex Score\\\"] <= 0.85, '⚠️ Fair', [\\\"Apdex Score\\\"] <= 0.94, '✔️ Good', '✔️ Excellent')\\n| project Values = InterestingDimension, [\\\"Apdex Score\\\"], [\\\"Apdex Interpretation\\\"], [\\\"Satisfied Users\\\"], [\\\"Tolerating Users\\\"], [\\\"Frustrated Users\\\"]\\n\",\"size\":0,\"showAnalytics\":true,\"queryType\":0,\"resourceType\":\"microsoft.insights/components\",\"visualization\":\"table\",\"gridSettings\":{\"formatters\":[{\"columnMatch\":\"Apdex Score\",\"formatter\":3,\"formatOptions\":{\"min\":0,\"max\":1,\"palette\":\"blue\",\"showIcon\":true}},{\"columnMatch\":\"Satisfied\",\"formatter\":8,\"formatOptions\":{\"min\":0,\"palette\":\"green\",\"showIcon\":true},\"numberFormat\":{\"unit\":17,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"Tolerating Users\",\"formatter\":8,\"formatOptions\":{\"min\":0,\"palette\":\"yellow\",\"showIcon\":true},\"numberFormat\":{\"unit\":17,\"options\":{\"style\":\"decimal\"}}},{\"columnMatch\":\"Frustrated Users\",\"formatter\":8,\"formatOptions\":{\"min\":0,\"palette\":\"red\",\"showIcon\":true},\"numberFormat\":{\"unit\":17,\"options\":{\"style\":\"decimal\"}}}],\"filter\":true,\"sortBy\":[{\"itemKey\":\"$gen_bar_Apdex Score_1\",\"sortOrder\":2}]},\"sortBy\":[{\"itemKey\":\"$gen_bar_Apdex Score_1\",\"sortOrder\":2}]}",
+                  "isOptional": true
+                },
+                {
+                  "name": "ParameterValues",
+                  "value": {
+                    "Type": {
+                      "type": 2,
+                      "value": "union pageViews, requests, dependencies",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Page Views, Requests and Dependencies",
+                      "displayName": "Type",
+                      "formattedValue": "union pageViews, requests, dependencies"
+                    },
+                    "Operations": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "All Operations",
+                      "displayName": "Operations",
+                      "formattedValue": "'*'"
+                    },
+                    "TimeRange": {
+                      "type": 4,
+                      "value": {
+                        "durationMs": 604800000
+                      },
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Last 7 days",
+                      "displayName": "TimeRange",
+                      "formattedValue": "Last 7 days"
+                    },
+                    "OperationsFilter": {
+                      "type": 1,
+                      "value": "",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "<unset>",
+                      "displayName": "OperationsFilter",
+                      "formattedValue": ""
+                    },
+                    "ApdexThresholdInMilliseconds": {
+                      "type": 1,
+                      "value": 788,
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": 788,
+                      "displayName": "ApdexThresholdInMilliseconds",
+                      "formattedValue": 788
+                    },
+                    "Calculations": {
+                      "type": 2,
+                      "value": "ConsiderFailures",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Consider failures as frustrating",
+                      "displayName": "Calculations",
+                      "formattedValue": "ConsiderFailures"
+                    },
+                    "SplitBy": {
+                      "type": 2,
+                      "value": "name",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "⚪ Activity Name",
+                      "displayName": "SplitBy",
+                      "formattedValue": "name"
+                    },
+                    "OrderBy": {
+                      "type": 2,
+                      "value": "Relevance desc",
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Most Relevant",
+                      "displayName": "OrderBy",
+                      "formattedValue": "Relevance desc"
+                    },
+                    "SegmentFilters": {
+                      "type": 2,
+                      "value": [
+                        "*"
+                      ],
+                      "isPending": false,
+                      "isWaiting": false,
+                      "isFailed": false,
+                      "isGlobal": false,
+                      "labelValue": "Include All",
+                      "displayName": "SegmentFilters",
+                      "formattedValue": "'*'"
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "Location",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/AppInsightsExtension/PartType/PinnedNotebookQueryPart"
+            }
+          },
+          "8": {
+            "position": {
+              "x": 0,
+              "y": 18,
+              "colSpan": 14,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "content": "__Uitleg aantal activiteiten__\r\n\r\nIn de onderstaande grafiek worden de verschillende activiteiten binnen de toepassing bij elkaar opgeteld. Daarnaast worden de verschillende fouten binnen de toepassing weergegeven (aantallen). De oorzaak van de problemen kunnen verschillen afhankelijk van de activiteit. Met behulp van het figuur wordt er inzicht verschaft over de belasting van de toepassing en hoeveel fouten hierin optreden.",
+                    "title": "",
+                    "subtitle": "",
+                    "markdownSource": 1,
+                    "markdownUri": null
+                  }
+                }
+              }
+            }
+          },
+          "9": {
+            "position": {
+              "x": 0,
+              "y": 20,
+              "colSpan": 14,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "_ADD_HERE_APPLICATION_INSIGHTS_ID_"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "8fd638e7-c151-4220-a540-915e5854ab70",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "P7D",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "// Request count trend \n// Chart Request count over the last day. \n// To create an alert for this query, click '+ New alert rule'\nunion pageViews, requests, dependencies\n    | summarize totalCount=sum(itemCount) by bin(timestamp, 12h)\n    | render timechart\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "Line",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "_ADD_HERE_APPLICATION_INSIGHTS_NAME_",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "totalCount",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "// Request count trend \n// Chart Request count over the last day. \n// To create an alert for this query, click '+ New alert rule'\nunion pageViews, requests, dependencies\n    | summarize totalCount=sum(itemCount), Fails=countif(success == false) by bin(timestamp, 6h)\n    | render timechart\n\n",
+                  "PartTitle": "Aantal activiteiten",
+                  "Dimensions": {
+                    "xAxis": {
+                      "name": "timestamp",
+                      "type": "datetime"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "totalCount",
+                        "type": "long"
+                      },
+                      {
+                        "name": "Fails",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  }
+                }
+              }
+            }
+          },
+          "10": {
+            "position": {
+              "x": 0,
+              "y": 25,
+              "colSpan": 14,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "settings": {
+                    "content": "__Uitleg top 10 fouten__\n\nIn de onderstaande grafiek worden de top 10 meest voorkomende fouten weergegeven. De oorzaak van de fout kan verschillen. Zo kan er een foutieve aanvraag gedaan worden of een externe service inactief zijn.\n",
+                    "title": "",
+                    "subtitle": "",
+                    "markdownSource": 1,
+                    "markdownUri": null
+                  }
+                }
+              }
+            }
+          },
+          "11": {
+            "position": {
+              "x": 0,
+              "y": 26,
+              "colSpan": 14,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "resourceTypeMode",
+                  "isOptional": true
+                },
+                {
+                  "name": "ComponentId",
+                  "isOptional": true
+                },
+                {
+                  "name": "Scope",
+                  "value": {
+                    "resourceIds": [
+                      "_ADD_HERE_APPLICATION_INSIGHTS_ID_"
+                    ]
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "PartId",
+                  "value": "139eac54-2857-40d2-932b-b098fb13b6dc",
+                  "isOptional": true
+                },
+                {
+                  "name": "Version",
+                  "value": "2.0",
+                  "isOptional": true
+                },
+                {
+                  "name": "TimeRange",
+                  "value": "P7D",
+                  "isOptional": true
+                },
+                {
+                  "name": "DashboardId",
+                  "isOptional": true
+                },
+                {
+                  "name": "DraftRequestParameters",
+                  "isOptional": true
+                },
+                {
+                  "name": "Query",
+                  "value": "requests\n| where success == false\n| summarize failedCount=sum(itemCount) by name\n| union (  dependencies\n        | where success == false\n        | summarize failedCount=sum(itemCount) by name\n        )\n| top 15 by failedCount desc\n| render barchart\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "ControlType",
+                  "value": "FrameControlChart",
+                  "isOptional": true
+                },
+                {
+                  "name": "SpecificChart",
+                  "value": "StackedBar",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartTitle",
+                  "value": "Analytics",
+                  "isOptional": true
+                },
+                {
+                  "name": "PartSubTitle",
+                  "value": "_ADD_HERE_APPLICATION_INSIGHTS_NAME_",
+                  "isOptional": true
+                },
+                {
+                  "name": "Dimensions",
+                  "value": {
+                    "xAxis": {
+                      "name": "name",
+                      "type": "string"
+                    },
+                    "yAxis": [
+                      {
+                        "name": "failedCount",
+                        "type": "long"
+                      }
+                    ],
+                    "splitBy": [],
+                    "aggregation": "Sum"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "LegendOptions",
+                  "value": {
+                    "isEnabled": true,
+                    "position": "Bottom"
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "IsQueryContainTimeRange",
+                  "value": false,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+              "settings": {
+                "content": {
+                  "Query": "requests\n| where success == false\n| summarize failedCount=sum(itemCount) by name\n| union (  dependencies\n        | where success == false\n        | summarize failedCount=sum(itemCount) by name\n        )\n| top 10 by failedCount desc\n\n",
+                  "LegendOptions": {
+                    "isEnabled": false,
+                    "position": "Bottom"
+                  }
+                }
+              },
+              "partHeader": {
+                "title": "Top 10 fouten",
+                "subtitle": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "nl-nl"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "utc",
+                "granularity": "auto",
+                "relative": "7d"
+              },
+              "displayCache": {
+                "name": "UTC Time",
+                "value": "Past 7 days"
+              },
+              "filteredPartIds": [
+                "StartboardPart-LogsDashboardPart-134b627d-d559-43df-b38e-341b8ac47e13",
+                "StartboardPart-LogsDashboardPart-134b627d-d559-43df-b38e-341b8ac47e17",
+                "StartboardPart-PinnedNotebookQueryPart-134b627d-d559-43df-b38e-341b8ac47e19",
+                "StartboardPart-PinnedNotebookQueryPart-134b627d-d559-43df-b38e-341b8ac47e1b",
+                "StartboardPart-LogsDashboardPart-134b627d-d559-43df-b38e-341b8ac47e1f",
+                "StartboardPart-LogsDashboardPart-134b627d-d559-43df-b38e-341b8ac47e27"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "_ADD_HERE_DASHBOARD_NAME_",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "_ADD_HERE_DASHBOARD_NAME_"
+  },
+  "apiVersion": "2015-08-01-preview"
+}

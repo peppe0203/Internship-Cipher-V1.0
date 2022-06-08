@@ -1,0 +1,657 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## Voorbeeld foutanalyses\r\n*app-type: application insights*\r\n___\r\n\r\nDit is een voorbeeld werkmap specifiek gemaakt voor het analyseren van (mogelijke) fouten.  \r\nHet betreft het app-type van application insights."
+      },
+      "name": "tekst - 0"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "ccd5adcd-8d59-4cfe-99ec-98075de2e253",
+            "version": "KqlParameterItem/1.0",
+            "name": "DefaultSubscription_Internal",
+            "type": 1,
+            "isRequired": true,
+            "query": "where type =~ 'microsoft.insights/components'\r\n| take 1\r\n| project subscriptionId",
+            "crossComponentResources": [
+              "value::selected"
+            ],
+            "isHiddenWhenLocked": true,
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "1ca69445-60fc-4806-b43d-ac7e6aad630a",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "query": "summarize by subscriptionId\r\n| project value = strcat(\"/subscriptions/\", subscriptionId), label = subscriptionId, selected = iff(subscriptionId =~ '{DefaultSubscription_Internal}', true, false)\r\n",
+            "crossComponentResources": [
+              "value::selected"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": []
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "e94aafa3-c5d9-4523-89f0-4e87aa754511",
+            "version": "KqlParameterItem/1.0",
+            "name": "Apps",
+            "type": 5,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "where type =~ 'microsoft.insights/components'\n| project id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "value": [
+              "value::100"
+            ],
+            "typeSettings": {
+              "resourceTypeFilter": {
+                "microsoft.insights/components": true
+              },
+              "limitSelectTo": 100,
+              "additionalResourceOptions": [
+                "value::100"
+              ]
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "c4b69c01-2263-4ada-8d9c-43433b739ff3",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "value": {
+              "durationMs": 604800000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ],
+              "allowCustom": null
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.resourcegraph/resources"
+      },
+      "name": "parameters - 1"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "where type =~ 'microsoft.insights/components'\r\n| project id, kind,location, resourceGroup",
+        "size": 1,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "table",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "resourceGroup"
+            ],
+            "expandTopLevel": true
+          },
+          "sortBy": [
+            {
+              "itemKey": "kind",
+              "sortOrder": 1
+            }
+          ],
+          "labelSettings": [
+            {
+              "columnId": "id",
+              "label": "Name"
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "kind",
+            "sortOrder": 1
+          }
+        ],
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "mapSettings": {
+          "locInfo": "AzureResource",
+          "locInfoColumn": "id"
+        }
+      },
+      "name": "query - 10"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let apps = range i from 1 to 1 step 1\r\n| extend x = '{Apps:name}'\r\n| extend x = split(x, ', ')\r\n| mvexpand x to typeof(string) limit 100\r\n| project appName = x;\r\nunion requests, dependencies, pageViews\r\n| summarize FailedRequests = countif(success == false), Count = count() by appName\r\n| join kind = inner (\r\n    union requests, dependencies, pageViews\r\n    | make-series Trend = countif(success == false) default = 0 on timestamp from {TimeRange:start} to {TimeRange:end} step {TimeRange:grain} by appName\r\n) on appName\r\n| project-away appName1, timestamp\r\n| join kind = fullouter (apps) on appName\r\n| extend appName = appName, FailedRequests = iff(appName == '', 0, FailedRequests), Count = iff(appName == '', 0, Count), Trend = iff(appName == \"\", repeat(0, toint(({TimeRange:end} - {TimeRange:start}) / {TimeRange:grain})), Trend)\r\n| where FailedRequests != 0 \r\n| extend MetricKind = 'Failures'\r\n| order by FailedRequests desc\r\n",
+        "size": 3,
+        "title": "Fouten binnen de geselecteerde application insights resources",
+        "noDataMessage": "Er hebben zich geen fouten opgedaan binnen de geselecteerde tijdreeks",
+        "noDataMessageStyle": 3,
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "{Apps}"
+        ],
+        "visualization": "tiles",
+        "tileSettings": {
+          "titleContent": {
+            "columnMatch": "appName",
+            "formatter": 1,
+            "formatOptions": {
+              "showIcon": true
+            }
+          },
+          "subtitleContent": {
+            "columnMatch": "MetricKind",
+            "formatter": 1,
+            "formatOptions": {
+              "showIcon": true
+            }
+          },
+          "leftContent": {
+            "columnMatch": "FailedRequests",
+            "formatter": 12,
+            "formatOptions": {
+              "min": 0,
+              "palette": "red",
+              "showIcon": true
+            },
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "style": "decimal"
+              }
+            }
+          },
+          "secondaryContent": {
+            "columnMatch": "Trend",
+            "formatter": 9,
+            "formatOptions": {
+              "palette": "red",
+              "showIcon": true
+            }
+          },
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0,
+          "topContent": {
+            "columnMatch": "appName",
+            "formatter": 1
+          },
+          "centerContent": {
+            "columnMatch": "FailedRequests",
+            "formatter": 1,
+            "numberFormat": {
+              "unit": 17,
+              "options": {
+                "maximumSignificantDigits": 3,
+                "maximumFractionDigits": 2
+              }
+            }
+          }
+        }
+      },
+      "name": "query - 3"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "Test de SelectedApp optie door het intype van de applicatie naam.\r\n\r\nBijvoorbeeld \"/subscriptions/00e20b88-1545-421b-84de-df0b02feaae6/resourcegroups/demo-monitoring-2/providers/microsoft.insights/components/monitoring-webapp-azure-internship-cipher-2\" <br> dit is de 2de test applicatie (vergeet de aanhalingstekens niet).  \r\n"
+      },
+      "name": "tekst - 10"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "66e58e14-2fcf-469f-9936-d05ed2622954",
+            "version": "KqlParameterItem/1.0",
+            "name": "SelectedApp",
+            "type": 1,
+            "isRequired": true,
+            "value": "\"/subscriptions/00e20b88-1545-421b-84de-df0b02feaae6/resourcegroups/demo-monitoring-2/providers/microsoft.insights/components/monitoring-webapp-azure-internship-cipher-2\""
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 4"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let data = union requests, dependencies, pageViews\n| where timestamp {TimeRange};\ndata\n| where appName == {SelectedApp}\n| summarize Users = dcount(user_Id), CountFailed = countif(success == false), Count = count() by name, appName, itemType\n| project App = appName, Operation = name, ['Count (Failed)'] = CountFailed, Count, ['Success %'] = round(100.0 * (Count - CountFailed) / Count, 2), Users, ['Type'] =itemType\n| union (data\n    | where appName == {SelectedApp}\n    | summarize Users = dcount(user_Id), CountFailed = countif(success == false), Count = count()\n    | project App = '🔸 All Apps', Operation = '🔸 All operations', ['Type']= '🔸 All requests, dependencies, pageviews',Users, ['Count (Failed)'] = CountFailed, Count, ['Success %'] = round(100.0 * (Count - CountFailed) / Count, 2))\n| order by ['Count (Failed)'] desc\n",
+        "size": 0,
+        "title": "Aanvraaggegevens",
+        "timeContextFromParameter": "TimeRange",
+        "exportParameterName": "Operation",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "{Apps}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Count (Failed)",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "max": null,
+                "palette": "red"
+              }
+            },
+            {
+              "columnMatch": "Count",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "max": null,
+                "palette": "blue"
+              }
+            },
+            {
+              "columnMatch": "Success %",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "max": 100,
+                "palette": "redGreen"
+              }
+            },
+            {
+              "columnMatch": "Users",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "max": null,
+                "palette": "blueDark"
+              }
+            }
+          ],
+          "sortBy": [
+            {
+              "itemKey": "$gen_heatmap_Count (Failed)_2",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "$gen_heatmap_Count (Failed)_2",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let row = dynamic({Operation});\nlet operation = tostring(row.Operation);\nlet app = tostring(row.App);\nunion requests, dependencies, pageViews\n| where appName == {SelectedApp}\n| where timestamp {TimeRange}\n| where (name == operation and appName == app) or (operation == '' and app == '') or (operation == '🔸 All operations' and app == '🔸 All Apps')\n| where success == false\n| summarize ['Failing Requests'] = count() by ['Result Code'] = tostring(resultCode)\n| top 4 by ['Failing Requests'] desc\n",
+        "size": 1,
+        "title": "Belangrijkste foutcodes",
+        "noDataMessage": "Er zijn geen fouten gevonden.",
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "{Apps}"
+        ],
+        "visualization": "table",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Failing Requests",
+              "formatter": 4,
+              "formatOptions": {
+                "min": 0,
+                "max": null,
+                "palette": "red"
+              }
+            }
+          ]
+        }
+      },
+      "customWidth": "50",
+      "name": "query - 12"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let row = dynamic({Operation});\nlet operation = tostring(row.Operation);\nlet app = tostring(row.App);\nunion requests, dependencies, pageViews\n| where appName == {SelectedApp}\n| where timestamp {TimeRange}\n| where success == false\n| where (name == operation and appName == app) or (operation == '' and app == '') or (operation == '🔸 All operations' and app == '🔸 All Apps')\n| make-series FailedRequest = countif(success == false) default = 0 on timestamp in range({TimeRange:start}, {TimeRange:end}, {TimeRange:grain})\n| mvexpand timestamp to typeof(datetime), FailedRequest to typeof(long)\n",
+        "size": 1,
+        "title": "Mislukte bewerkingen",
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "{Apps}"
+        ],
+        "visualization": "areachart"
+      },
+      "customWidth": "50",
+      "name": "query - 8"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "______\r\n## Responce en request tijden (gemiddelde)"
+      },
+      "name": "tekst - 11"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let row = dynamic({Operation});\r\nlet selectedOperation = tostring(row.Operation);\r\nlet selectedApp = tostring(row.App);\r\nlet selectedApps = range i from 1 to 1 step 1\r\n| extend x = '{SelectedApp:name}'\r\n| extend x = split(x, ', ')\r\n| mvexpand x to typeof(string) limit 100\r\n| project appName = x;\r\nlet rawData = union requests, dependencies, pageViews\r\n| where selectedOperation == name;\r\nlet apps = rawData\r\n| summarize Metric = avg(duration), Count = count(), Users = dcount(user_Id) by appName\r\n| project Id = appName, ParentId = '', Name = strcat('☁️ ', appName), Kind = 'Application', Metric, Count, Users\r\n| join kind = inner (\r\n    rawData\r\n    | make-series Trend = avg(duration) default = 0 on timestamp from {TimeRange:start} to {TimeRange:end} step {TimeRange:grain} by Id = appName\r\n) on Id\r\n| project-away Id1, timestamp\r\n| join kind = fullouter (selectedApps) on $left.Id == $right.appName\r\n| extend Id = appName, Name = strcat('☁️ ', appName), Kind = 'Application', Metric = iff(Id == '', 0.0, Metric), Count = iff(Id == '', 0, Count), Users = iff(Id == '', 0, Users), Trend = iff(Id == '', repeat(0, toint(({TimeRange:end} - {TimeRange:start}) / {TimeRange:grain})), Trend);\r\nlet requests = rawData\r\n| summarize Metric = avg(duration), Count = count(), Users = dcount(user_Id) by appName, name\r\n| project Id = strcat(appName, '::', name), ParentId = appName, Name = strcat('🌐 ', name), Kind = 'Request', Metric, Count, Users\r\n| join kind = inner (\r\n    rawData\r\n    | make-series Trend = avg(duration) default = 0 on timestamp from {TimeRange:start} to {TimeRange:end} step {TimeRange:grain} by Id = strcat(appName, '::', name)\r\n) on Id\r\n| project-away Id1, timestamp;\r\nunion requests, dependencies, pageViews\r\n| union (apps)\r\n| where ParentId == selectedApp\r\n| extend Rank = iff(Name contains 'Other Apps' or Name contains 'Other Requests', 2, 1), \r\n         Relevance = Metric * Count\r\n| order by Rank asc, Relevance desc\r\n| project Id, ParentId, Name, Kind, ['Mean'] = Metric, ['Trend'] = Trend, Count, Users\r\n",
+        "size": 1,
+        "noDataMessage": "The Application Insights resource you selected has no data.",
+        "timeContextFromParameter": "TimeRange",
+        "exportParameterName": "Row",
+        "exportDefaultValue": "{}",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "{Apps}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Id",
+              "formatter": 5
+            },
+            {
+              "columnMatch": "ParentId",
+              "formatter": 5
+            },
+            {
+              "columnMatch": "Mean|Median|p80|p95|p99",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "blue"
+              },
+              "numberFormat": {
+                "unit": 23,
+                "options": {
+                  "style": "decimal",
+                  "maximumFractionDigits": 2
+                }
+              }
+            },
+            {
+              "columnMatch": "Trend",
+              "formatter": 9,
+              "formatOptions": {
+                "min": 0,
+                "palette": "blue"
+              }
+            },
+            {
+              "columnMatch": "Count",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "green"
+              },
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "style": "decimal"
+                }
+              }
+            },
+            {
+              "columnMatch": "Users",
+              "formatter": 5,
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "style": "decimal"
+                }
+              }
+            }
+          ],
+          "filter": true,
+          "hierarchySettings": {
+            "idColumn": "Id",
+            "parentColumn": "ParentId",
+            "treeType": 0,
+            "expanderColumn": "Name",
+            "expandTopLevel": true
+          },
+          "sortBy": [
+            {
+              "itemKey": "$gen_heatmap_Count_6",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "$gen_heatmap_Count_6",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "customWidth": "65",
+      "name": "query - 4"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let row = dynamic({Row});\r\nunion requests, dependencies, pageViews\r\n| where (row.Kind == 'Application' and row.Id == appName) or (row.Kind == 'Request' and row.Id == strcat(appName, \"::\", name)) or '{Row}' == '{}'\r\n| make-series Metric = avg(duration) default = 0 on timestamp from {TimeRange:start} to {TimeRange:end} step {TimeRange:grain}\r\n| mvexpand timestamp to typeof(datetime), Metric to typeof(real) limit 1000\r\n",
+        "size": 0,
+        "noDataMessage": "The Application Insights resource you selected has no data.",
+        "timeContextFromParameter": "TimeRange",
+        "exportParameterName": "Row",
+        "exportDefaultValue": "{}",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "{Apps}"
+        ],
+        "visualization": "areachart",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Id",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "ParentId",
+              "formatter": 5,
+              "formatOptions": {
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Mean|Median|p80|p95|p99",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "blue",
+                "showIcon": true
+              },
+              "numberFormat": {
+                "unit": 23,
+                "options": {
+                  "style": "decimal",
+                  "maximumFractionDigits": 2
+                }
+              }
+            },
+            {
+              "columnMatch": "Trend",
+              "formatter": 9,
+              "formatOptions": {
+                "min": 0,
+                "palette": "blue",
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Count",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "green",
+                "showIcon": true
+              },
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "style": "decimal"
+                }
+              }
+            },
+            {
+              "columnMatch": "Users",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "palette": "yellow",
+                "showIcon": true
+              },
+              "numberFormat": {
+                "unit": 17,
+                "options": {
+                  "style": "decimal"
+                }
+              }
+            }
+          ],
+          "hierarchySettings": {
+            "idColumn": "Id",
+            "parentColumn": "ParentId",
+            "treeType": 0,
+            "expanderColumn": "Name",
+            "expandTopLevel": true
+          }
+        },
+        "sortBy": [],
+        "tileSettings": {
+          "titleContent": {
+            "columnMatch": "appName",
+            "formatter": 1,
+            "formatOptions": {
+              "showIcon": true
+            }
+          },
+          "subtitleContent": {
+            "columnMatch": "MetricKind",
+            "formatter": 1,
+            "formatOptions": {
+              "showIcon": true
+            }
+          },
+          "leftContent": {
+            "columnMatch": "Metric",
+            "formatter": 12,
+            "formatOptions": {
+              "min": 0,
+              "palette": "blue",
+              "showIcon": true
+            },
+            "numberFormat": {
+              "unit": 23,
+              "options": {
+                "style": "decimal",
+                "maximumFractionDigits": 2,
+                "maximumSignificantDigits": 3
+              }
+            }
+          },
+          "secondaryContent": {
+            "columnMatch": "Trend",
+            "formatter": 9,
+            "formatOptions": {
+              "palette": "blue",
+              "showIcon": true
+            }
+          },
+          "showBorder": false
+        }
+      },
+      "customWidth": "35",
+      "name": "query - 8"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "fromTemplateId": "community-Workbooks/Azure Monitor - Applications/Failure Analysis",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
